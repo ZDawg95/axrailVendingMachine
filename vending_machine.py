@@ -1,6 +1,6 @@
 class AxrailVendingMachine:
     def __init__(self):
-        # Assumption: Drinks are to be hardcoded, customer cannot add or remove drinks
+        # Assumption 1: Drinks are to be hardcoded, customer cannot add or remove drinks
         # Will use a hash map here, to map the drinks to the price.
         # Prices shall be integers (In your code, you can have a few drinks as your items with any price (no coin))
         self.drinks = {
@@ -14,7 +14,8 @@ class AxrailVendingMachine:
 
         self.currency = "RM"
 
-        self.acceptedNotes = [100, 50, 20, 10, 5, 1]  # Assumption 2: as per standard Malaysian RM Notes
+        # Assumption 2: We assume that the machine has enough notes all the time
+        self.acceptedNotes = [100, 50, 20, 10, 5, 1]  # Assumption 3: as per standard Malaysian RM Notes
 
     def display_available_drinks(self):
         print("======================================================================")
@@ -36,10 +37,25 @@ class AxrailVendingMachine:
     def make_payment(self, cost, drink_choice):
         while True:
             try:
-                amount_inserted = int(input(f"Total amount due is {self.currency}{cost}. Please insert cash in RM: "))
+                print(f"Total amount due is {self.currency}{cost}")
+                cust_finished_insertion = False
+                amount_inserted = 0
+                while not cust_finished_insertion:
+                    print(f"You have inserted {self.currency}{amount_inserted}")
+                    print(f"Balance Remaining: {self.currency}{cost - amount_inserted}")
+                    note_inserted = int(input("Please insert a valid note into the machine (Accepted values: 1, 5, 10, 20, 50, 100): RM"))
+                    if note_inserted in self.acceptedNotes:
+                        amount_inserted += note_inserted
+                    else:
+                        print("Sorry, that note is invalid, please try again.")
+
+                    if amount_inserted >= cost:
+                        cust_finished_insertion = True
+                    else:
+                        print("========================================")
+
                 if amount_inserted < cost:
-                    print("Sorry, the amount entered is insufficient. "
-                          " Please try again or 'Cancel' to cancel purchase.")
+                    print("Sorry, the amount entered is insufficient. Please try again")
                 elif amount_inserted == cost:
                     print(f"Exact amount inserted, no change returned. Thank you and enjoy your {drink_choice}!")
                     return amount_inserted
@@ -74,7 +90,7 @@ class AxrailVendingMachine:
                 change_notes = self.calc_change(change)
 
                 print(f"Thank you and enjoy your {drink_choice}!")
-                print("Don't forget to take your change: ")
+                print(f"You have paid {self.currency}{amount_inserted}. Don't forget to take your change of {self.currency}{change}: ")
                 for note, count in change_notes:
                     if count > 0:
                         print(f"{self.currency}{note} x {count} -->", self.currency, str(note * count))
