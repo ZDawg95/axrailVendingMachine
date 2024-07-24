@@ -19,7 +19,7 @@ class AxrailVendingMachine:
 
     def display_available_drinks(self):
         print("======================================================================")
-        print("Welcome to the Axrail Vending :Machine!\nHere are a list of beverages available: ")
+        print("Welcome to the Axrail Vending Machine!\nHere are a list of available beverages: ")
         print("(Disclaimer: The sale of alcoholic beverages in Malaysia is PROHIBITED for Muslims and to those under "
               "the age of 21)")
         print("======================================================================")
